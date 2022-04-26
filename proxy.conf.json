@@ -1,8 +1,8 @@
 
 {
-"/cliente/": {
-    "target": "https://localhost:7281/",
-    "secure": false,
-    "logLevel": "debug"
-}
+    "/cliente/": {
+        "target": "https://localhost:7247",
+        "secure": false,
+        "logLevel": "debug"
+    }
 }

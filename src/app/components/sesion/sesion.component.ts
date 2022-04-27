@@ -1,10 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
-import Swal from 'sweetalert2';
-import { UsuarioModel } from '../../models/usuario.model';
-import { AuthService } from '../../services/auth.service';
- 
+import { FormBuilder, Validators } from '@angular/forms';
 
 
 @Component({
@@ -13,60 +8,28 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./sesion.component.css']
 })
 export class SesionComponent implements OnInit {
-  usuario: UsuarioModel= new UsuarioModel();
-  recordarme=false;
 
-  constructor(private auth:AuthService,
-              private router: Router) { }
+  formLog = this.nombreform.group ({
+    input1: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(8), Validators.pattern('[0-9]{7,8}')]],
+    input2: ['', [Validators.required, Validators.minLength(8), Validators.pattern('^(?=\\w*\\d)(?=\\w*[A-Z])(?=\\w*[a-z])\\S{8,16}$'),Validators.maxLength(16)]]
+  })
+
+
+
+get input1(){return this.formLog.get('input1')}
+get input2(){return this.formLog.get('input2')}
+
+  constructor(private nombreform:FormBuilder) { }
 
   ngOnInit(): void {
-    if(localStorage.getItem('email')){
-      this.usuario.email= localStorage.getItem('email');
-      this.recordarme=true;
-    }
   }
-  login (forms:NgForm){
-    if (forms.invalid){return;}
-    console.log('formulario',forms);
-    
-    Swal.fire({
-      allowOutsideClick:false,
-      
-      text:'Espere por favor...'
-    });
-    Swal.showLoading();
-      
-      this.auth.login(this.usuario)
-          .subscribe (resp=>{
-           
-            Swal.close();
-            if(this.recordarme){
-              localStorage.setItem('email',this.usuario.email);
-            }
-            this.router.navigateByUrl('/menu');
-            
-  
-          },(err)=>{
-            console.log(err.error);
-            Swal.fire({
-              title:'Error al autenticar',
-              
-              text:err.error
-            });
-          });
-      
-          
-  }
-  
-    
 
 }
 
-// , (err)=>{
-//   Swal.fire({
-    
-//     allowOutsideClick:false,
-//     title:'Error al autenticar',
-    
-//   });
-// }
+
+
+
+
+
+
+

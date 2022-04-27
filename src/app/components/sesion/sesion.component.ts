@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UsersService } from 'src/app/services/users/users.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -8,22 +10,58 @@ import { FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./sesion.component.css']
 })
 export class SesionComponent implements OnInit {
+//Mail!:string;
+//Password!: string;
 
-  formLog = this.nombreform.group ({
-    input1: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(8), Validators.pattern('[0-9]{7,8}')]],
-    input2: ['', [Validators.required, Validators.minLength(8), Validators.pattern('^(?=\\w*\\d)(?=\\w*[A-Z])(?=\\w*[a-z])\\S{8,16}$'),Validators.maxLength(16)]]
-  })
+Login(){
+  const val = this.Sesion.value;
 
-
-
-get input1(){return this.formLog.get('input1')}
-get input2(){return this.formLog.get('input2')}
-
-  constructor(private nombreform:FormBuilder) { }
-
-  ngOnInit(): void {
+  if(val.Correo && val.Contraseña){
+    this.userService.IngresoUsuario(val.Correo, val.Contraseña)
+      .subscribe(
+        () => {
+          console.log("usuario logeado")
+          this.Router.navigateByUrl('/menu')
+        }
+      )
   }
+}
 
+Sesion = this.nombreform.group ({
+  Correo: ['', [Validators.required,]],
+  Contraseña: ['', [Validators.required]]
+})
+
+get Correo(){return this.Sesion.get('Correo')}
+get Contraseña(){return this.Sesion.get('Contraseña')}
+
+  constructor(private nombreform:FormBuilder,
+              public userService: UsersService,
+              private Router: Router) { }
+
+  ngOnInit(): void { }
+/*
+  Inicio(Mail:string, Password:string){
+    Mail= this.Sesion.value.Mail
+    Password= this.Sesion.value.Password
+    if(this.Sesion.valid){
+      console.log('prueba1');
+      this.userService.IngresoUsuario(Mail, Password)
+      .subscribe(res => {
+        if(res == false){
+          console.error('Error de ingreso creo');
+        }
+        if(res == true){
+          this.Router.navigateByUrl('/menu')
+        }
+      })
+    }
+    if(this.Sesion.invalid){
+      console.error('ta todo mal ameo')
+      this.Router.navigateByUrl('/')
+    }
+  }
+*/
 }
 
 

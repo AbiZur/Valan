@@ -21,4 +21,14 @@ export class UsersService {
         })
       )
   }
+  /*
+  IngresoUsuario(usuario){
+    return this.http.post('Usuario/Login', usuario)
+  }
+  */
+  IngresoUsuario(Correo:string, Contraseña: string){
+    return this.http.post('Usuario/Login', {Correo, Contraseña});
+    
+  }
+
 }

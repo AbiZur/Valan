@@ -9,10 +9,11 @@ import { map } from 'rxjs';
 })
 export class UsersService {
 
+
   constructor(private http: HttpClient) { }
 
   GuardarUsuario(oUsuario: Usuario){
-    return this.http.post('/Usuario/GuardarUsuario',oUsuario) 
+    return this.http.post('Usuario/GuardarUsuario',oUsuario) 
       .pipe(
         map ((res:any) => {
           oUsuario.Id_Usuario=res.Nombre;
